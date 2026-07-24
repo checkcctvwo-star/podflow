@@ -21,6 +21,7 @@
 - **Flutter**：一套代码跑 Android + Windows，桌面端优先调试，再上真机。
 - **Dart**：业务逻辑、RSS 解析、下载管理。
 - **ffmpeg**：音频格式转码（`ffmpeg_kit_flutter`）。
+- **drift (SQLite)**：本地持久化订阅、单集、下载状态。
 - **GitHub**：每完成一个小功能就 commit + push，作为回滚点。
 - **GitHub Actions**：自动打包 Android APK 与 Windows 安装包。
 
@@ -30,6 +31,11 @@
 2. 拆小任务（tickets），blockers-first 逐个实现。
 3. 每个任务用 TDD：写测试 -> 实现 -> 跑通 -> code review -> commit。
 4. 关键节点在 Windows 桌面端和 Android 真机上验证。
+
+## 文档
+
+- [SPEC.md](./SPEC.md) — 产品规格说明
+- [docs/adr/](./docs/adr/) — 架构决策记录
 
 ## LICENSE
 
