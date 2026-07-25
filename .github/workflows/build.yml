@@ -1,0 +1,98 @@
+name: Build APK and Windows EXE
+
+  on:
+    push:
+      branches: [master, main]
+    pull_request:
+      branches: [master, main]
+    workflow_dispatch:
+
+  jobs:
+    test:
+      name: Run tests
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Setup Flutter
+          uses: subosito/flutter-action@v2
+          with:
+            flutter-version: '3.44.8'
+            channel: 'stable'
+
+        - name: Install dependencies
+          run: flutter pub get
+
+        - name: Generate drift code
+          run: dart run build_runner build
+
+        - name: Run tests
+          run: flutter test
+
+    build-android:
+      name: Build Android APK
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Setup Java
+          uses: actions/setup-java@v4
+          with:
+            distribution: 'temurin'
+            java-version: '17'
+
+        - name: Setup Flutter
+          uses: subosito/flutter-action@v2
+          with:
+            flutter-version: '3.44.8'
+            channel: 'stable'
+
+        - name: Install dependencies
+          run: flutter pub get
+
+        - name: Generate drift code
+          run: dart run build_runner build
+
+        - name: Build APK
+          run: flutter build apk --release
+
+        - name: Upload APK
+          uses: actions/upload-artifact@v4
+          with:
+            name: android-apk
+            path: build/app/outputs/flutter-apk/app-release.apk
+
+    build-windows:
+      name: Build Windows EXE
+      needs: test
+      runs-on: windows-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Setup Flutter
+          uses: subosito/flutter-action@v2
+          with:
+            flutter-version: '3.44.8'
+            channel: 'stable'
+
+        - name: Enable Windows desktop
+          run: flutter config --enable-windows-desktop
+
+        - name: Install dependencies
+          run: flutter pub get
+
+        - name: Generate drift code
+          run: dart run build_runner build
+
+        - name: Build Windows
+          run: flutter build windows --release
+
+        - name: Upload Windows EXE
+          uses: actions/upload-artifact@v4
+          with:
+            name: windows-exe
+            path: build/windows/x64/runner/Release/
