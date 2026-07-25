@@ -48,6 +48,9 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.0
 
+  # Audio transcoding
+  ffmpeg_kit_flutter_full_gpl: ^6.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
