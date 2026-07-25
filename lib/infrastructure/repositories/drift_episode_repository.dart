@@ -44,6 +44,7 @@ class DriftEpisodeRepository implements EpisodeRepository {
             coverUrl: Value(e.coverUrl),
             episodeNumber: Value(e.episodeNumber),
             localPath: Value(e.localPath),
+            isDownloaded: Value(e.isDownloaded),
           ),
         ),
       );
@@ -77,5 +78,6 @@ class DriftEpisodeRepository implements EpisodeRepository {
         coverUrl: row.coverUrl,
         episodeNumber: row.episodeNumber,
         localPath: row.localPath,
+        isDownloaded: row.isDownloaded,
       );
 }

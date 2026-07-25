@@ -11,6 +11,7 @@ class Episode extends Equatable {
   final String? coverUrl;
   final int? episodeNumber;
   final String? localPath;
+  final bool isDownloaded;
 
   const Episode({
     required this.id,
@@ -23,6 +24,7 @@ class Episode extends Equatable {
     this.coverUrl,
     this.episodeNumber,
     this.localPath,
+    this.isDownloaded = false,
   });
 
   Episode copyWith({
@@ -36,6 +38,7 @@ class Episode extends Equatable {
     String? coverUrl,
     int? episodeNumber,
     String? localPath,
+    bool? isDownloaded,
   }) =>
       Episode(
         id: id ?? this.id,
@@ -48,6 +51,7 @@ class Episode extends Equatable {
         coverUrl: coverUrl ?? this.coverUrl,
         episodeNumber: episodeNumber ?? this.episodeNumber,
         localPath: localPath ?? this.localPath,
+        isDownloaded: isDownloaded ?? this.isDownloaded,
       );
 
   @override
@@ -62,5 +66,6 @@ class Episode extends Equatable {
         coverUrl,
         episodeNumber,
         localPath,
+        isDownloaded,
       ];
 }
