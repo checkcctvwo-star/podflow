@@ -9,6 +9,7 @@ class Subscription extends Equatable {
   final String? author;
   final String? link;
   final DateTime addedAt;
+  final DateTime? lastRefreshedAt;
 
   const Subscription({
     required this.id,
@@ -19,6 +20,7 @@ class Subscription extends Equatable {
     this.author,
     this.link,
     required this.addedAt,
+    this.lastRefreshedAt,
   });
 
   Subscription copyWith({
@@ -30,6 +32,7 @@ class Subscription extends Equatable {
     String? author,
     String? link,
     DateTime? addedAt,
+    DateTime? lastRefreshedAt,
   }) =>
       Subscription(
         id: id ?? this.id,
@@ -40,6 +43,7 @@ class Subscription extends Equatable {
         author: author ?? this.author,
         link: link ?? this.link,
         addedAt: addedAt ?? this.addedAt,
+        lastRefreshedAt: lastRefreshedAt ?? this.lastRefreshedAt,
       );
 
   @override
@@ -52,5 +56,6 @@ class Subscription extends Equatable {
         author,
         link,
         addedAt,
+        lastRefreshedAt,
       ];
 }
