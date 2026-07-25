@@ -677,6 +677,17 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _localPathMeta = const VerificationMeta(
+    'localPath',
+  );
+  @override
+  late final GeneratedColumn<String> localPath = GeneratedColumn<String>(
+    'local_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _isDownloadedMeta = const VerificationMeta(
     'isDownloaded',
   );
@@ -703,6 +714,7 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
     audioUrl,
     coverUrl,
     episodeNumber,
+    localPath,
     isDownloaded,
   ];
   @override
@@ -791,6 +803,12 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
         ),
       );
     }
+    if (data.containsKey('local_path')) {
+      context.handle(
+        _localPathMeta,
+        localPath.isAcceptableOrUnknown(data['local_path']!, _localPathMeta),
+      );
+    }
     if (data.containsKey('is_downloaded')) {
       context.handle(
         _isDownloadedMeta,
@@ -845,6 +863,10 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
         DriftSqlType.int,
         data['${effectivePrefix}episode_number'],
       ),
+      localPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_path'],
+      ),
       isDownloaded: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}is_downloaded'],
@@ -868,6 +890,7 @@ class Episode extends DataClass implements Insertable<Episode> {
   final String audioUrl;
   final String? coverUrl;
   final int? episodeNumber;
+  final String? localPath;
   final bool isDownloaded;
   const Episode({
     required this.id,
@@ -879,6 +902,7 @@ class Episode extends DataClass implements Insertable<Episode> {
     required this.audioUrl,
     this.coverUrl,
     this.episodeNumber,
+    this.localPath,
     required this.isDownloaded,
   });
   @override
@@ -902,6 +926,9 @@ class Episode extends DataClass implements Insertable<Episode> {
     }
     if (!nullToAbsent || episodeNumber != null) {
       map['episode_number'] = Variable<int>(episodeNumber);
+    }
+    if (!nullToAbsent || localPath != null) {
+      map['local_path'] = Variable<String>(localPath);
     }
     map['is_downloaded'] = Variable<bool>(isDownloaded);
     return map;
@@ -928,6 +955,9 @@ class Episode extends DataClass implements Insertable<Episode> {
       episodeNumber: episodeNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(episodeNumber),
+      localPath: localPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(localPath),
       isDownloaded: Value(isDownloaded),
     );
   }
@@ -947,6 +977,7 @@ class Episode extends DataClass implements Insertable<Episode> {
       audioUrl: serializer.fromJson<String>(json['audioUrl']),
       coverUrl: serializer.fromJson<String?>(json['coverUrl']),
       episodeNumber: serializer.fromJson<int?>(json['episodeNumber']),
+      localPath: serializer.fromJson<String?>(json['localPath']),
       isDownloaded: serializer.fromJson<bool>(json['isDownloaded']),
     );
   }
@@ -963,6 +994,7 @@ class Episode extends DataClass implements Insertable<Episode> {
       'audioUrl': serializer.toJson<String>(audioUrl),
       'coverUrl': serializer.toJson<String?>(coverUrl),
       'episodeNumber': serializer.toJson<int?>(episodeNumber),
+      'localPath': serializer.toJson<String?>(localPath),
       'isDownloaded': serializer.toJson<bool>(isDownloaded),
     };
   }
@@ -977,6 +1009,7 @@ class Episode extends DataClass implements Insertable<Episode> {
     String? audioUrl,
     Value<String?> coverUrl = const Value.absent(),
     Value<int?> episodeNumber = const Value.absent(),
+    Value<String?> localPath = const Value.absent(),
     bool? isDownloaded,
   }) => Episode(
     id: id ?? this.id,
@@ -992,6 +1025,7 @@ class Episode extends DataClass implements Insertable<Episode> {
     episodeNumber: episodeNumber.present
         ? episodeNumber.value
         : this.episodeNumber,
+    localPath: localPath.present ? localPath.value : this.localPath,
     isDownloaded: isDownloaded ?? this.isDownloaded,
   );
   Episode copyWithCompanion(EpisodesCompanion data) {
@@ -1015,6 +1049,7 @@ class Episode extends DataClass implements Insertable<Episode> {
       episodeNumber: data.episodeNumber.present
           ? data.episodeNumber.value
           : this.episodeNumber,
+      localPath: data.localPath.present ? data.localPath.value : this.localPath,
       isDownloaded: data.isDownloaded.present
           ? data.isDownloaded.value
           : this.isDownloaded,
@@ -1033,6 +1068,7 @@ class Episode extends DataClass implements Insertable<Episode> {
           ..write('audioUrl: $audioUrl, ')
           ..write('coverUrl: $coverUrl, ')
           ..write('episodeNumber: $episodeNumber, ')
+          ..write('localPath: $localPath, ')
           ..write('isDownloaded: $isDownloaded')
           ..write(')'))
         .toString();
@@ -1049,6 +1085,7 @@ class Episode extends DataClass implements Insertable<Episode> {
     audioUrl,
     coverUrl,
     episodeNumber,
+    localPath,
     isDownloaded,
   );
   @override
@@ -1064,6 +1101,7 @@ class Episode extends DataClass implements Insertable<Episode> {
           other.audioUrl == this.audioUrl &&
           other.coverUrl == this.coverUrl &&
           other.episodeNumber == this.episodeNumber &&
+          other.localPath == this.localPath &&
           other.isDownloaded == this.isDownloaded);
 }
 
@@ -1077,6 +1115,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
   final Value<String> audioUrl;
   final Value<String?> coverUrl;
   final Value<int?> episodeNumber;
+  final Value<String?> localPath;
   final Value<bool> isDownloaded;
   final Value<int> rowid;
   const EpisodesCompanion({
@@ -1089,6 +1128,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     this.audioUrl = const Value.absent(),
     this.coverUrl = const Value.absent(),
     this.episodeNumber = const Value.absent(),
+    this.localPath = const Value.absent(),
     this.isDownloaded = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1102,6 +1142,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     required String audioUrl,
     this.coverUrl = const Value.absent(),
     this.episodeNumber = const Value.absent(),
+    this.localPath = const Value.absent(),
     this.isDownloaded = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -1118,6 +1159,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     Expression<String>? audioUrl,
     Expression<String>? coverUrl,
     Expression<int>? episodeNumber,
+    Expression<String>? localPath,
     Expression<bool>? isDownloaded,
     Expression<int>? rowid,
   }) {
@@ -1131,6 +1173,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
       if (audioUrl != null) 'audio_url': audioUrl,
       if (coverUrl != null) 'cover_url': coverUrl,
       if (episodeNumber != null) 'episode_number': episodeNumber,
+      if (localPath != null) 'local_path': localPath,
       if (isDownloaded != null) 'is_downloaded': isDownloaded,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1146,6 +1189,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     Value<String>? audioUrl,
     Value<String?>? coverUrl,
     Value<int?>? episodeNumber,
+    Value<String?>? localPath,
     Value<bool>? isDownloaded,
     Value<int>? rowid,
   }) {
@@ -1159,6 +1203,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
       audioUrl: audioUrl ?? this.audioUrl,
       coverUrl: coverUrl ?? this.coverUrl,
       episodeNumber: episodeNumber ?? this.episodeNumber,
+      localPath: localPath ?? this.localPath,
       isDownloaded: isDownloaded ?? this.isDownloaded,
       rowid: rowid ?? this.rowid,
     );
@@ -1194,6 +1239,9 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     if (episodeNumber.present) {
       map['episode_number'] = Variable<int>(episodeNumber.value);
     }
+    if (localPath.present) {
+      map['local_path'] = Variable<String>(localPath.value);
+    }
     if (isDownloaded.present) {
       map['is_downloaded'] = Variable<bool>(isDownloaded.value);
     }
@@ -1215,6 +1263,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
           ..write('audioUrl: $audioUrl, ')
           ..write('coverUrl: $coverUrl, ')
           ..write('episodeNumber: $episodeNumber, ')
+          ..write('localPath: $localPath, ')
           ..write('isDownloaded: $isDownloaded, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -2697,6 +2746,7 @@ typedef $$EpisodesTableCreateCompanionBuilder =
       required String audioUrl,
       Value<String?> coverUrl,
       Value<int?> episodeNumber,
+      Value<String?> localPath,
       Value<bool> isDownloaded,
       Value<int> rowid,
     });
@@ -2711,6 +2761,7 @@ typedef $$EpisodesTableUpdateCompanionBuilder =
       Value<String> audioUrl,
       Value<String?> coverUrl,
       Value<int?> episodeNumber,
+      Value<String?> localPath,
       Value<bool> isDownloaded,
       Value<int> rowid,
     });
@@ -2822,6 +2873,11 @@ class $$EpisodesTableFilterComposer
 
   ColumnFilters<int> get episodeNumber => $composableBuilder(
     column: $table.episodeNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get localPath => $composableBuilder(
+    column: $table.localPath,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2953,6 +3009,11 @@ class $$EpisodesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get localPath => $composableBuilder(
+    column: $table.localPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<bool> get isDownloaded => $composableBuilder(
     column: $table.isDownloaded,
     builder: (column) => ColumnOrderings(column),
@@ -3022,6 +3083,9 @@ class $$EpisodesTableAnnotationComposer
     column: $table.episodeNumber,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get localPath =>
+      $composableBuilder(column: $table.localPath, builder: (column) => column);
 
   GeneratedColumn<bool> get isDownloaded => $composableBuilder(
     column: $table.isDownloaded,
@@ -3143,6 +3207,7 @@ class $$EpisodesTableTableManager
                 Value<String> audioUrl = const Value.absent(),
                 Value<String?> coverUrl = const Value.absent(),
                 Value<int?> episodeNumber = const Value.absent(),
+                Value<String?> localPath = const Value.absent(),
                 Value<bool> isDownloaded = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => EpisodesCompanion(
@@ -3155,6 +3220,7 @@ class $$EpisodesTableTableManager
                 audioUrl: audioUrl,
                 coverUrl: coverUrl,
                 episodeNumber: episodeNumber,
+                localPath: localPath,
                 isDownloaded: isDownloaded,
                 rowid: rowid,
               ),
@@ -3169,6 +3235,7 @@ class $$EpisodesTableTableManager
                 required String audioUrl,
                 Value<String?> coverUrl = const Value.absent(),
                 Value<int?> episodeNumber = const Value.absent(),
+                Value<String?> localPath = const Value.absent(),
                 Value<bool> isDownloaded = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => EpisodesCompanion.insert(
@@ -3181,6 +3248,7 @@ class $$EpisodesTableTableManager
                 audioUrl: audioUrl,
                 coverUrl: coverUrl,
                 episodeNumber: episodeNumber,
+                localPath: localPath,
                 isDownloaded: isDownloaded,
                 rowid: rowid,
               ),

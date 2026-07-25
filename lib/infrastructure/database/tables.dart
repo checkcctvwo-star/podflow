@@ -27,6 +27,7 @@ class Episodes extends Table {
   TextColumn get audioUrl => text()();
   TextColumn get coverUrl => text().nullable()();
   IntColumn get episodeNumber => integer().nullable()();
+  TextColumn get localPath => text().nullable()();
   BoolColumn get isDownloaded => boolean().withDefault(const Constant(false))();
 
   @override

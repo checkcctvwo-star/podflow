@@ -5,4 +5,5 @@ abstract class EpisodeRepository {
   Future<Episode?> getEpisode(String id);
   Future<void> saveEpisodes(List<Episode> episodes);
   Future<void> markDownloaded(String id, {required bool downloaded});
+  Future<void> updateLocalPath(String id, String localPath);
 }

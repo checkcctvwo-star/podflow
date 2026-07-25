@@ -43,6 +43,7 @@ class DriftEpisodeRepository implements EpisodeRepository {
             audioUrl: Value(e.audioUrl),
             coverUrl: Value(e.coverUrl),
             episodeNumber: Value(e.episodeNumber),
+            localPath: Value(e.localPath),
           ),
         ),
       );
@@ -53,6 +54,13 @@ class DriftEpisodeRepository implements EpisodeRepository {
   Future<void> markDownloaded(String id, {required bool downloaded}) async {
     await (_db.update(_db.episodes)..where((e) => e.id.equals(id))).write(
       drift.EpisodesCompanion(isDownloaded: Value(downloaded)),
+    );
+  }
+
+  @override
+  Future<void> updateLocalPath(String id, String localPath) async {
+    await (_db.update(_db.episodes)..where((e) => e.id.equals(id))).write(
+      drift.EpisodesCompanion(localPath: Value(localPath)),
     );
   }
 
@@ -68,5 +76,6 @@ class DriftEpisodeRepository implements EpisodeRepository {
         audioUrl: row.audioUrl,
         coverUrl: row.coverUrl,
         episodeNumber: row.episodeNumber,
+        localPath: row.localPath,
       );
 }
