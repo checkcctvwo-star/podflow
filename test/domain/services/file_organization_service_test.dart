@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:path/path.dart' as p;
 import 'package:podflow/domain/models/episode.dart';
 import 'package:podflow/domain/models/subscription.dart';
 import 'package:podflow/domain/services/file_organization_service.dart';
@@ -23,20 +24,26 @@ void main() {
       final path = service.generateEpisodePath(
         subscription: subscription,
         episode: episode,
-        rootDirectory: r'C:\Podcasts',
+        rootDirectory: 'podcasts',
         extension: 'mp3',
       );
-      expect(path, r'C:\Podcasts\日谈公园\为什么要读书 - 日谈公园.mp3');
+      expect(
+        path,
+        p.join('podcasts', '日谈公园', '为什么要读书 - 日谈公园.mp3'),
+      );
     });
 
     test('strips leading dot from extension', () {
       final path = service.generateEpisodePath(
         subscription: subscription,
         episode: episode,
-        rootDirectory: r'C:\Podcasts',
+        rootDirectory: 'podcasts',
         extension: '.mp3',
       );
-      expect(path, r'C:\Podcasts\日谈公园\为什么要读书 - 日谈公园.mp3');
+      expect(
+        path,
+        p.join('podcasts', '日谈公园', '为什么要读书 - 日谈公园.mp3'),
+      );
     });
 
     test('sanitizes show folder name', () {
@@ -44,10 +51,13 @@ void main() {
       final path = service.generateEpisodePath(
         subscription: dirtySubscription,
         episode: episode,
-        rootDirectory: r'C:\Podcasts',
+        rootDirectory: 'podcasts',
         extension: 'mp3',
       );
-      expect(path, r'C:\Podcasts\日谈_公园\为什么要读书 - 日谈_公园.mp3');
+      expect(
+        path,
+        p.join('podcasts', '日谈_公园', '为什么要读书 - 日谈_公园.mp3'),
+      );
     });
   });
 }
