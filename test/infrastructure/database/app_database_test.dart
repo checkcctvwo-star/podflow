@@ -10,9 +10,7 @@ void main() {
     late AppDatabase db;
 
     setUp(() {
-      db = AppDatabase.forTesting(
-        DatabaseConnection(NativeDatabase.memory()),
-      );
+      db = AppDatabase.forTesting(NativeDatabase.memory());
     });
 
     tearDown(() => db.close());
@@ -23,6 +21,7 @@ void main() {
               id: 'sub1',
               feedUrl: 'https://example.com/feed.rss',
               title: '日谈公园',
+              addedAt: DateTime.now(),
             ),
           );
 
@@ -38,6 +37,7 @@ void main() {
               id: 'sub1',
               feedUrl: 'https://example.com/feed.rss',
               title: '日谈公园',
+              addedAt: DateTime.now(),
             ),
           );
 
@@ -65,6 +65,7 @@ void main() {
               id: 'sub1',
               feedUrl: 'https://example.com/feed.rss',
               title: '日谈公园',
+              addedAt: DateTime.now(),
             ),
           );
       await db.into(db.episodes).insert(

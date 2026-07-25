@@ -23,6 +23,29 @@ class Episode extends Equatable {
     this.episodeNumber,
   });
 
+  Episode copyWith({
+    String? id,
+    String? subscriptionId,
+    String? title,
+    String? description,
+    DateTime? publishedAt,
+    Duration? duration,
+    String? audioUrl,
+    String? coverUrl,
+    int? episodeNumber,
+  }) =>
+      Episode(
+        id: id ?? this.id,
+        subscriptionId: subscriptionId ?? this.subscriptionId,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        publishedAt: publishedAt ?? this.publishedAt,
+        duration: duration ?? this.duration,
+        audioUrl: audioUrl ?? this.audioUrl,
+        coverUrl: coverUrl ?? this.coverUrl,
+        episodeNumber: episodeNumber ?? this.episodeNumber,
+      );
+
   @override
   List<Object?> get props => [
         id,

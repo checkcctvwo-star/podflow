@@ -21,6 +21,27 @@ class Subscription extends Equatable {
     required this.addedAt,
   });
 
+  Subscription copyWith({
+    String? id,
+    String? feedUrl,
+    String? title,
+    String? description,
+    String? coverUrl,
+    String? author,
+    String? link,
+    DateTime? addedAt,
+  }) =>
+      Subscription(
+        id: id ?? this.id,
+        feedUrl: feedUrl ?? this.feedUrl,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        coverUrl: coverUrl ?? this.coverUrl,
+        author: author ?? this.author,
+        link: link ?? this.link,
+        addedAt: addedAt ?? this.addedAt,
+      );
+
   @override
   List<Object?> get props => [
         id,
