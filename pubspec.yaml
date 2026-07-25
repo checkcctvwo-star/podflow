@@ -48,8 +48,8 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.0
 
-  # Audio transcoding
-  ffmpeg_kit_flutter_full_gpl: ^6.0.3
+  # Audio transcoding (community-maintained fork of the retired ffmpeg-kit)
+  ffmpeg_kit_flutter_new: ^4.5.3
 
   # State management and audio playback
   flutter_riverpod: ^2.6.1

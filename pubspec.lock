@@ -265,14 +265,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.2.0"
-  ffmpeg_kit_flutter_full_gpl:
+  ffmpeg_kit_flutter_new:
     dependency: "direct main"
     description:
-      name: ffmpeg_kit_flutter_full_gpl
-      sha256: "4f269bcb636bfcb544e5b4d65c706a3d311839970cb42638e72406410c1b5b7b"
+      name: ffmpeg_kit_flutter_new
+      sha256: "96d649b36d032a5ded4accbb8912cc30d30659ec89ecc1be87261572120b36c6"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "6.0.3"
+    version: "4.5.3"
   ffmpeg_kit_flutter_platform_interface:
     dependency: transitive
     description:
